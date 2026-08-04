@@ -1,5 +1,5 @@
 # This script converts the 'maori.pdf' file into a list of words, which then can be tokenised elsewhere.
-# it filters out all words but nouns and removes duplicates
+# it filters out duplicates
 
 # importing required classes
 from pypdf import PdfReader
@@ -9,30 +9,38 @@ import re
 reader = PdfReader("Source/raw/maori.pdf")
 
 wordlist : str = ""
+lastWord : str = ""
 
 # read each page
 for page in reader.pages:
     pageText = page.extract_text()
     lines = pageText.split("\n")
 
+    #trim to remove headers and footer
+    lines.pop()
+    lines.pop()
+    lines.pop(0)
+    lines.pop(0)
+
     # loop thru each line. Entries with maori words have atleast 3 strings if split by " "
     for line in lines:
+        if (re.search("^[0-9]", line)): continue # if begins with a number, skip
+
+        line = re.sub("/(.*/) ", "", line) # remove weird grammar stuff, so wordtype is second
+
         words = line.split(" ")
 
-        # sometimes the word type is merged with the word. Unmerge
-        # there are otehr types other than 'n', but since we filter only for n, we can ignore those
-        # note: no maori words ending with n
-        if (words[0].endswith("n")):
-            maori = words[0][0:-1]
-            words = [maori, "n", "3rd field"]
-
-        if (len(words) < 3): continue # has atleast maori, word type and def. It means its not the title or a page number
         maori = words[0]
-        wordtype = words[1]
+        #wordtype = words[1]
 
-        if (wordtype != "n") : continue # ignore everything not noun
-        if (re.search(r"[()+← ]", maori)) : continue # some entries have weird chars and are rare enough to safely discard
+        #if (wordtype != "n"): continue # filter out non-noun word types
 
+        maori = maori.lower()
+
+        #remove dupilcates
+        if (lastWord == maori): continue
+
+        lastWord = maori
         wordlist += maori + " "
 
 

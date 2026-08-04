@@ -1,6 +1,6 @@
 import json
 
-nSize = 3
+nSize = 5
 wordlist_path = "Source/wordlists/maori_wordlist.txt"
 ngrams_path = "Source/ngrams/"
 
@@ -35,9 +35,8 @@ def ProcessWeights(ngrams : list[tuple[str, str]]) -> dict[str, dict[str, int]]:
 
         else:
             outcomeWeights[context] = {target : 1}
-            
 
-    print(outcomeWeights)
+            
     return outcomeWeights
 
 def Main():

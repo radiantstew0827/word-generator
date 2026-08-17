@@ -2,7 +2,7 @@ import json
 import random
 import re
 
-ngramPath = "Source/ngrams/maori_ngrams.json"
+ngramPath = "Source/ngrams/english_ngrams.json"
 
 def GetTotalWeight(weightedList : dict[any, int|float]) -> float|int:
     totalWeight = 0

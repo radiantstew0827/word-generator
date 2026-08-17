@@ -1,7 +1,7 @@
 import json
 
-nSize = 5
-wordlist_path = "Source/wordlists/maori_wordlist.txt"
+nSize = 4
+wordlist_path = "Source/wordlists/english_wordlist.txt"
 ngrams_path = "Source/ngrams/"
 
 

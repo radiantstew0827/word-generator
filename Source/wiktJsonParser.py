@@ -3,8 +3,8 @@
 wiktFilePath = ""
 langCodes = []
 
-ignoreTags = {"letter", "morpheme"}
-wordLists : dict[str, list[str]] = {}
+ignoreTags = {"letter", "morpheme", "suffix", "prefix"}
+wordLists : dict[str, set[str]] = {}
 
 def ProcessLine(data):
     global wordLists
@@ -23,15 +23,26 @@ def ProcessLine(data):
         tags = set(senses["tags"])
         if (not tags.isdisjoint(ignoreTags)): return
 
-    word = jsonLine["word"]
+    word : str = jsonLine["word"]
+    word = word.lower()
 
     # create entry of it in wordlists
     if (langCode not in wordLists):
-        wordLists[langCode] = []
+        wordLists[langCode] = set()
 
-    wordLists[langCode].append(word)
+    wordLists[langCode].add(word)
 
     #print(word, end="\t")
+
+def ToFile(langCode : str, wordlist : set[str]):
+    print("Dumping word lists to files")
+
+    with open(f"wordlists/{langCode}_wordlist.txt", "w", encoding = "UTF-8") as file:
+        wordlistStr = " ".join(wordlist)
+
+        file.write(wordlistStr)
+        file.close()
+
 
 
 def Main():
@@ -50,9 +61,11 @@ def Main():
             if (currentLine % 10000 == 0):
                 print(f"Done line {currentLine}")
 
-    print(wordLists)
-    
-    
+    # inserts words to files
+    for langCode in wordLists:
+        ToFile(langCode, wordLists[langCode])
+
+    input("Finished")
     
     
 if __name__ == "__main__":

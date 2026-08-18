@@ -1,4 +1,6 @@
 ﻿import json
+from dotenv import load_dotenv
+import os
 
 wiktFilePath = ""
 langCodes = []
@@ -37,8 +39,9 @@ def ProcessLine(data):
 def ToFile(langCode : str, wordlist : set[str]):
     print("Dumping word lists to files")
 
-    with open(f"wordlists/{langCode}_wordlist.txt", "w", encoding = "UTF-8") as file:
-        wordlistStr = " ".join(wordlist)
+    with open(f"{os.getenv("WORDLIST_PATH")}{langCode}_wordlist.txt", "w", encoding = "UTF-8") as file:
+        seperator = os.getenv("SEPERATOR")
+        wordlistStr = seperator.join(wordlist)
 
         file.write(wordlistStr)
         file.close()
@@ -69,4 +72,6 @@ def Main():
     
     
 if __name__ == "__main__":
+    load_dotenv()
+
     Main()

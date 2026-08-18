@@ -1,8 +1,5 @@
-import json
-import random
-import re
-
-ngramPath = "Source/ngrams/english_ngrams.json"
+import json, random, re, os
+from dotenv import load_dotenv
 
 def GetTotalWeight(weightedList : dict[any, int|float]) -> float|int:
     totalWeight = 0
@@ -56,6 +53,9 @@ def GenerateWord(weights : dict[str, dict[str, int]]) -> str:
     return TrimWord(word)
 
 def Main():
+    ngramFileName = input("Name of the NGram file: ")
+    ngramPath = f"{os.getenv("NGRAM_PATH")}{ngramFileName}"
+
     try:
         with open(ngramPath, "r") as file:
             weights = json.load(file)
@@ -70,4 +70,6 @@ def Main():
     input()
 
 if (__name__ == "__main__"):
+    load_dotenv()
+
     Main()

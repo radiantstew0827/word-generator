@@ -3,10 +3,17 @@
 
 # importing required classes
 from pypdf import PdfReader
-import re 
+from dotenv import load_dotenv
+import re, os
+
+# get env files
+load_dotenv()
+wordlistPath = os.getenv("WORDLIST_PATH")
+rawPath = os.getenv("RAW_PATH")
+seperator = os.getenv("SEPERATOR")
 
 # creating a pdf reader object
-reader = PdfReader("Source/raw/maori.pdf")
+reader = PdfReader(f"{rawPath}maori.pdf")
 
 wordlist : str = ""
 lastWord : str = ""
@@ -37,16 +44,19 @@ for page in reader.pages:
 
         maori = maori.lower()
 
-        #remove dupilcates
+        #remove dupilcates, dictionary is alphabetical order
         if (lastWord == maori): continue
 
         lastWord = maori
-        wordlist += maori + " "
+        wordlist += maori + seperator
 
 
 # save word list to file
 # file will create itself if not exist
-with open("Source/wordlists/maori_wordlist.txt", "w", encoding = "UTF-8") as file:
+with open(f"{wordlistPath}maori_wordlist.txt", "w", encoding = "UTF-8") as file:
     file.write(wordlist)
     file.close()
+
+print("Finished")
+input()
 

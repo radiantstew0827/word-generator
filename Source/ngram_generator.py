@@ -1,8 +1,5 @@
-import json
-
-nSize = 4
-wordlist_path = "Source/wordlists/english_wordlist.txt"
-ngrams_path = "Source/ngrams/"
+import json, os
+from dotenv import load_dotenv
 
 
 def GenerateNGrams(n : int, word : str, ngrams : list[tuple[str, str]]):
@@ -40,30 +37,33 @@ def ProcessWeights(ngrams : list[tuple[str, str]]) -> dict[str, dict[str, int]]:
     return outcomeWeights
 
 def Main():
+    wordlistName = input("Name of the wordlist file: ")
+    nGramCount = int(input("NGram count: "))
+    wordlistPath = f"{os.getenv("WORDLIST_PATH")}{wordlistName}"
+
     #open word list file
     try:
-        file = open(wordlist_path, "r", encoding = "UTF-8")
+        file = open(wordlistPath, "r", encoding = "UTF-8")
     except FileNotFoundError:
-        print(f"File {wordlist_path} not found.")
+        print(f"File {wordlistPath} not found.")
         input()
         return # exit program
 
-    wordlist = file.read().split(" ")
+    wordlist = file.read().split(os.getenv("SEPERATOR")) # seperate string into a list
     ngrams : list[tuple[str, str]] = []
 
     # get ngrams
     for word in wordlist:
-        GenerateNGrams(nSize, word, ngrams)
+        GenerateNGrams(nGramCount, word, ngrams)
 
     # process weights
     weights = ProcessWeights(ngrams)
 
     # dump weights into json file
     # first, get the prefix
-    fileName = wordlist_path.split("/")[-1]
-    prefixTuple =  fileName.split("_")[0:-1] # remove "_wordlist.txt"
+    prefixTuple =  wordlistName.split("_")[0:-1] # remove "_wordlist.txt"
     prefix = "_".join(prefixTuple)
-    ngramFile = ngrams_path+prefix+"_ngrams.json"
+    ngramFile = f"{os.getenv("NGRAM_PATH")}{prefix}_ngrams.json"
 
     with open(ngramFile, "w") as file:
         json.dump(weights, file, indent=2)
@@ -72,4 +72,6 @@ def Main():
     input()
 
 if __name__ == "__main__":
+    load_dotenv()
+
     Main()

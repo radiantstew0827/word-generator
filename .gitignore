@@ -181,5 +181,6 @@ cython_debug/
 .cursorindexingignore
 
 # ignore training data and wordlists
-/Source/raw
-/Source/wordlists
+Source/raw
+Source/wordlists
+Source/ngrams

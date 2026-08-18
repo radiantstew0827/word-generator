@@ -1,6 +1,6 @@
 # Word generator
 
-This repo uses the N-Gram model to generate words based of training data. The original purpose of this repo was to create name generator a game set in the pacific ocean, with procedurally generated islands. For this reason, many examples in this repo are of polonesian languages found in the pacific.
+This repo uses the N-Gram model to generate words based of training data. The original purpose of this repo was to create name generator for a game set in the pacific ocean, with procedurally generated islands. For this reason, many examples in this repo are of polonesian languages found in the pacific.
 
 ## Setup
 

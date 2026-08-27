@@ -83,8 +83,9 @@ def Main():
         words.append(word)
 
     # print the words
+    print(words)
     for i in range(wordCount):
-        print(words[i], end="\n" if i % 5 == 0 else " | ")
+        print(words[i], end="\n" if (i+1) % 5 == 0 else " | ")
 
     input()
 

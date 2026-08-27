@@ -1,6 +1,5 @@
-import json, os
 from dotenv import load_dotenv
-
+import json, os
 
 def GenerateNGrams(n : int, word : str, ngrams : list[tuple[str, str]]):
     # add start characters so previous words aren't being read and converted into ngrams
@@ -32,46 +31,41 @@ def ProcessWeights(ngrams : list[tuple[str, str]]) -> dict[str, dict[str, int]]:
 
         else:
             outcomeWeights[context] = {target : 1}
-
             
     return outcomeWeights
 
-def Main():
-    wordlistName = input("Name of the wordlist file: ")
-    nGramCount = int(input("NGram count: "))
-    wordlistPath = f"{os.getenv("WORDLIST_PATH")}{wordlistName}"
-
+def GetWordlistFromFile(inputFileName : str, seperator : str) -> list[str]:
+    wordlistPath = f"{os.getenv("WORDLIST_PATH")}{inputFileName}"
+    
     #open word list file
     try:
         file = open(wordlistPath, "r", encoding = "UTF-8")
     except FileNotFoundError:
         print(f"File {wordlistPath} not found.")
-        input()
-        return # exit program
+        return None # exit program
 
-    wordlist = file.read().split(os.getenv("SEPERATOR")) # seperate string into a list
+    return file.read().split(seperator) # seperate string into a list
+
+def GenerateNGramFile(inputFileName : str, outputFileName : str, n : int, seperator : str = ", "):
+    load_dotenv()
+
     ngrams : list[tuple[str, str]] = []
+
+    # get wordlist
+    wordlist = GetWordlistFromFile(inputFileName, seperator)
+    if (not wordlist): return
 
     # get ngrams
     for word in wordlist:
-        GenerateNGrams(nGramCount, word, ngrams)
+        GenerateNGrams(n, word, ngrams)
 
     # process weights
     weights = ProcessWeights(ngrams)
 
     # dump weights into json file
-    # first, get the prefix
-    prefixTuple =  wordlistName.split("_")[0:-1] # remove "_wordlist.txt"
-    prefix = "_".join(prefixTuple)
-    ngramFile = f"{os.getenv("NGRAM_PATH")}{prefix}_ngrams.json"
+    ngramFilePath = f"{os.getenv("NGRAM_PATH")}{outputFileName}"
 
-    with open(ngramFile, "w") as file:
+    with open(ngramFilePath, "w") as file:
         json.dump(weights, file, indent=2)
 
-    print(f"n-grams successfuly created to {ngramFile}")
-    input()
-
-if __name__ == "__main__":
-    load_dotenv()
-
-    Main()
+    print(f"n-grams successfuly created to {ngramFilePath}")

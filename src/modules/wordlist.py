@@ -1,9 +1,5 @@
-import json, random, re, os
+import re, os, json, random
 from dotenv import load_dotenv
-
-# settings
-filterContextSized = True # generated words of context size are guaranteed to be found in the training data. Filter them out?
-wordCount = 50 # how many words to generate
 
 def GetTotalWeight(weightedList : dict[any, int|float]) -> float|int:
     totalWeight = 0
@@ -56,17 +52,18 @@ def GenerateWord(weights : dict[str, dict[str, int]]) -> str:
 
     return TrimWord(word)
 
-def Main():
-    ngramFileName = input("Name of the NGram file: ")
-    ngramPath = f"{os.getenv("NGRAM_PATH")}{ngramFileName}"
+def GenerateList(inputFile: str, wordCount : int = 50, separator : str = " | ", wordsPerLine : int = -1, filterContextSized : bool = False):
+    load_dotenv()
+    print(inputFile, wordCount, separator, wordsPerLine, filterContextSized)
 
+    inputFilePath = f"{os.getenv("NGRAM_PATH")}{inputFile}"
+    
     # open file
     try:
-        with open(ngramPath, "r") as file:
+        with open(inputFilePath, "r") as file:
             weights = json.load(file)
     except FileNotFoundError:
-        print(f"File {ngramPath} not found.")
-        input()
+        print(f"File {inputFilePath} not found.")
         return
 
     # generate words
@@ -83,13 +80,7 @@ def Main():
         words.append(word)
 
     # print the words
-    print(words)
+    newLines = wordsPerLine != -1
     for i in range(wordCount):
-        print(words[i], end="\n" if (i+1) % 5 == 0 else " | ")
-
-    input()
-
-if (__name__ == "__main__"):
-    load_dotenv()
-
-    Main()
+        newLineNow = newLines and (i+1) % wordsPerLine == 0
+        print(words[i], end="\n" if newLineNow else separator)

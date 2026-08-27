@@ -179,8 +179,3 @@ cython_debug/
 #  refer to https://docs.cursor.com/context/ignore-files
 .cursorignore
 .cursorindexingignore
-
-# ignore training data and wordlists
-Source/raw
-Source/wordlists
-Source/ngrams

@@ -4,21 +4,32 @@ import os
 
 wiktFilePath = ""
 langCodes = []
-
-ignoreTags = {"letter", "morpheme", "suffix", "prefix"}
 wordLists : dict[str, set[str]] = {}
+
+# settings
+ignoreTags = {"letter", "morpheme", "suffix", "prefix", "archaic", "abbreviation", "initialism", "alt-of"}
+filterPhrases = True # whether to filter out entries with multiple words
+characterLimit = 10 # filter out words with more than these characters
+translationThreshhold = 25 # translation count decently reflects usage frequency of the word. Entries with more translation than this will be skipped
 
 def ProcessLine(data):
     global wordLists
 
     jsonLine = json.loads(data)
-    if ("word" not in jsonLine): return
-    if ("lang_code" not in jsonLine): return
+    if ("word" not in jsonLine): return # not a word
+    if ("lang_code" not in jsonLine): return # doen't have a language?
     langCode = jsonLine["lang_code"]
 
     # skip not wanted languages
     if (langCode not in langCodes): return
     senses = jsonLine["senses"][0]
+
+    # translation count threshold
+    if (translationThreshhold > 0): # some words have no trlations. Only check for trlations if threshhold allows it
+        if ("translations" not in jsonLine): return # no translations
+
+        translationCount = len(jsonLine["translations"])
+        if (translationCount < translationThreshhold): return
 
     # ingore these tags (not words)
     if ("tags" in senses):
@@ -26,6 +37,10 @@ def ProcessLine(data):
         if (not tags.isdisjoint(ignoreTags)): return
 
     word : str = jsonLine["word"]
+
+    #process word
+    if (" " in word or "-" in word): return # multiple words
+    if (len(word) > characterLimit): return # above character limit
     word = word.lower()
 
     # create entry of it in wordlists
@@ -34,7 +49,6 @@ def ProcessLine(data):
 
     wordLists[langCode].add(word)
 
-    #print(word, end="\t")
 
 def ToFile(langCode : str, wordlist : set[str]):
     print("Dumping word lists to files")

@@ -19,9 +19,9 @@ The `maori_wordlist.txt` wordlist is generated using Maori_toraw.py script. It u
 
 The `polishPlaces_wordlist.txt` wordlist is generated using the Polish_toraw.py script. It uses a exhaustive database of polish place names. The data is divided into 5 pdfs found [here](https://www.gov.pl/web/mswia/wykaz-urzedowych-nazw-miejscowosci-i-ich-czesci)
 
-Every other wordlist uses the wiktionary data dump found [here](kaikki.org/dictionary/rawdata.html). The wordlists are created using the `wiktJsonParser.py` script, with the options to choose which languages to create wordlists of. There are some settings in the file that change what words are accepted into the wordlist.
+Every other wordlist uses the wiktionary data dump found [here](kaikki.org/dictionary/rawdata.html). The wordlists are created using the `wiktJsonParser.py` script, with the options to choose which languages to create wordlists of. There are some settings in the code that change what words are accepted into the wordlist.
 
 ### Generating N-Grams and custom words
-The `word_generator.py` script takes a wordlist file and generates an ngram file. The `ngram_generator.py` script takes a ngram file and generates a list of custom words.
+The `word_generator.py` script takes a wordlist file and generates an ngram file. Settings can also be found in the code. The `ngram_generator.py` script takes a ngram file and generates a list of custom words.
 
 > Raw data was not commited into this repo. If you wish to use the parsers, the data has to be downloaded manually 

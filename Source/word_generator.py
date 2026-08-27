@@ -1,6 +1,10 @@
 import json, random, re, os
 from dotenv import load_dotenv
 
+# settings
+filterContextSized = True # generated words of context size are guaranteed to be found in the training data. Filter them out?
+wordCount = 50 # how many words to generate
+
 def GetTotalWeight(weightedList : dict[any, int|float]) -> float|int:
     totalWeight = 0
 
@@ -56,6 +60,7 @@ def Main():
     ngramFileName = input("Name of the NGram file: ")
     ngramPath = f"{os.getenv("NGRAM_PATH")}{ngramFileName}"
 
+    # open file
     try:
         with open(ngramPath, "r") as file:
             weights = json.load(file)
@@ -64,8 +69,22 @@ def Main():
         input()
         return
 
-    for i in range(1,50):
-        print(GenerateWord(weights), end="\n" if i % 5 == 0 else ", ")
+    # generate words
+    words = []
+    while len(words) < wordCount:
+        keys = list(weights.keys())
+        contextSize = len(keys[0])
+
+        word = GenerateWord(weights)
+
+        #filter Context Sized
+        if (filterContextSized and len(word) <= contextSize): continue
+
+        words.append(word)
+
+    # print the words
+    for i in range(1, wordCount):
+        print(words[i], end="\n" if i % 5 == 0 else " | ")
 
     input()
 

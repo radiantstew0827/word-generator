@@ -9,8 +9,19 @@ wordLists : dict[str, set[str]] = {}
 # settings
 ignoreTags = {"letter", "morpheme", "suffix", "prefix", "archaic", "abbreviation", "initialism", "alt-of"}
 filterPhrases = True # whether to filter out entries with multiple words
-characterLimit = 10 # filter out words with more than these characters
-translationThreshhold = 25 # translation count decently reflects usage frequency of the word. Entries with more translation than this will be skipped
+characterLimit = 20 # filter out words with more than these characters
+translationThreshhold = 0 # translation count decently reflects usage frequency of the word. Entries with less translations than this will be skipped
+
+def ProccessFile(file):
+    currentLine : int = 0
+
+    for line in file:
+        ProcessLine(line)
+        
+        currentLine+=1
+        # inform user every 10k lines
+        if (currentLine % 10000 == 0):
+            print(f"Done line {currentLine}")
 
 def ProcessLine(data):
     global wordLists
@@ -61,22 +72,20 @@ def ToFile(langCode : str, wordlist : set[str]):
         file.close()
 
 
-
 def Main():
     global wiktFilePath, langCodes
     
     wiktFilePath = input("Relative path for wiktionary json data dump: ")
     langCodes = input("Language codes to look for: ").split(" ")
-    
-    with open(wiktFilePath, encoding="utf-8") as file:
-        currentLine : int = 0
-        for line in file:
-            ProcessLine(line)
+
+    try:
+        with open(wiktFilePath, encoding="utf-8") as file:
+            ProccessFile(file)
             
-            currentLine+=1
-            # inform user every 10k lines
-            if (currentLine % 10000 == 0):
-                print(f"Done line {currentLine}")
+    except(FileNotFoundError):
+        print(f"File {wiktFilePath} not found.")
+        input()
+        return
 
     # inserts words to files
     for langCode in wordLists:

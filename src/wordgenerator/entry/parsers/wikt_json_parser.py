@@ -1,4 +1,4 @@
-﻿from src.modules.wikt_parser import Parse
+﻿from wordgenerator.modules.wikt_parser import Parse
 import argparse
 
 # argparse
@@ -10,11 +10,11 @@ parser.add_argument("-c", "--char_limit", help="filter out words above this char
 parser.add_argument("-t", "--trns_threshhold", help="translation count decently reflects usage frequency of the word. entries with translations below the threshold - and therefore less common - will be filtered out.", type = int, default=0)
 parser.add_argument("-s", "--separator", help="the seperator used in the wordlist", default=", ")
 
-def Main():
+def main():
     args = parser.parse_args()
 
     Parse(args.input_file, args.lang_codes, args.keep_phrases, args.char_limit, args.trns_threshhold, args.separator)
     
     
 if __name__ == "__main__":
-    Main()
+    main()

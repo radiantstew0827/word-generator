@@ -1,6 +1,6 @@
-import json, os, argparse
+import argparse
 from dotenv import load_dotenv
-from src.modules.ngram import GenerateNGramFile
+from wordgenerator.modules.ngram import GenerateNGramFile
 
 # arg parse
 parser = argparse.ArgumentParser()
@@ -11,7 +11,7 @@ parser.add_argument("-s", "--seperator", help="the seperator used in the wordlis
 # constants
 SUFFIX = "_ngrams.json"
 
-def Main():
+def main():
     args = parser.parse_args()
 
     # dump weights into json file
@@ -25,4 +25,4 @@ def Main():
 if __name__ == "__main__":
     load_dotenv()
 
-    Main()
+    main()

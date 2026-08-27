@@ -1,0 +1,11 @@
+[project]
+name = "Word-Generator"
+description = "Generates words based on the N-Gram model using training data."
+readme = "README.md"
+dependencies = ["python-dotenv"]
+version = "1.0.0"
+
+[project.scripts]
+ngram-generator = "wordgenerator.entry.ngram_generator:main"
+word-generator = "wordgenerator.entry.word_generator:main"
+wikt-json-parser = "wordgenerator.entry.parsers.wikt_json_parser:main"

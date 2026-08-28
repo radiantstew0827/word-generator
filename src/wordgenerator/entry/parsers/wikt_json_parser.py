@@ -12,8 +12,9 @@ parser.add_argument("-s", "--separator", help="the seperator used in the wordlis
 
 def main():
     args = parser.parse_args()
+    langCodes = args.lang_codes.split()
 
-    Parse(args.input_file, args.lang_codes, args.keep_phrases, args.char_limit, args.trns_threshhold, args.separator)
+    Parse(args.input_file, langCodes, args.keep_phrases, args.char_limit, args.trns_threshhold, args.separator)
     
     
 if __name__ == "__main__":

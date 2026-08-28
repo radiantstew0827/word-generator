@@ -73,7 +73,7 @@ def ToFile(langCode : str, wordlist : set[str], separator):
         file.write(wordlistStr)
         file.close()
 
-def Parse(inputFile : str, langCodes : str, keepPhrases : str, charLimit : int, transThreshhold : int, separator : str):
+def Parse(inputFile : str, langCodes : list[str], keepPhrases : str, charLimit : int, transThreshhold : int, separator : str):
     load_dotenv()
 
     inputFilePath = f"{os.getenv("RAW_PATH")}{inputFile}"

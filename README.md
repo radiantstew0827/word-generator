@@ -4,7 +4,7 @@
 
 This project contains a set of tools to generate realistic words based on training data. It uses the N-Gram model to generate words which are statistically likely according to the training data used to create it. 
 
-This project uses wiktionary dumps, found on [kaikki](kaikki.org/dictionary/rawdata.html), to create training data. These are called wordlists and are stored on `data/wordlists/`. Another tool creates N-Gram files, stored in `data/ngrams/`. This N-Gram file is used to generate the words.
+This project uses wiktionary dumps, found on [kaikki](https://kaikki.org/dictionary/rawdata.html), to create training data. These are called wordlists and are stored on `data/wordlists/`. Another tool creates N-Gram files, stored in `data/ngrams/`. This N-Gram file is used to generate the words.
 
 The English wiktionary data dump contains entry from all languages, meaning words of other languages can be extracted. However, translation data is only available for English.. The number of translation under a word decently reflects usage of a word, which can be used to filter out words too niche or sophisticated from the training data. Therefore, you might wish to download wiktionary of datadumps of another languages if you wish filter based on translation count. Data dumps must be stored in `data/raw/`.
 
@@ -69,7 +69,7 @@ For all of these commands, detailed usage, including optional parameters, can be
 
 ### Wiktionary parser
 
-The repo does not contain wiktionary files by default due to their size. They have to be downloaded from [kaikki](kaikki.org/dictionary/rawdata.html) and placed in `data/raw/`.
+The repo does not contain wiktionary files by default due to their size. They have to be downloaded from [kaikki](https://kaikki.org/dictionary/rawdata.html) and placed in `data/raw/`.
 
 The wiktionary parser `wikt-json-parser` takes the dump and creates the training data.
 ```bash

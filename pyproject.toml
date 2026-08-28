@@ -4,6 +4,7 @@ description = "Generates words based on the N-Gram model using training data."
 readme = "README.md"
 dependencies = ["python-dotenv"]
 version = "1.0.0"
+requires-python = ">= 3.12"
 
 [project.scripts]
 ngram-generator = "wordgenerator.entry.ngram_generator:main"
